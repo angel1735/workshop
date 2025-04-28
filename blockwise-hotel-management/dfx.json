@@ -1,0 +1,28 @@
+{
+    "canisters": {
+      "hotel_booking": {
+        "main": "src/main.mo",
+        "type": "motoko"
+      },
+      "hotel_booking_assets": {
+        "dependencies": [
+          "hotel_booking"
+        ],
+        "frontend": {
+          "entrypoint": "src/hotel_booking_assets/src/index.html"
+        },
+        "source": [
+          "src/hotel_booking_assets/assets",
+          "dist/hotel_booking_assets/"
+        ],
+        "type": "assets"
+      }
+    },
+    "defaults": {
+      "build": {
+        "args": "",
+        "packtool": ""
+      }
+    },
+    "version": 1
+  } 

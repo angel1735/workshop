@@ -1,0 +1,56 @@
+// Version: 1.0.0
+type AssocList<K, V> = List<(K, V)>;
+type AssocList__1<K, V> = AssocList<K, V>;
+type Booking =
+  {
+    checkInDate : Time;
+    checkOutDate : Time;
+    customerId : CustomerId;
+    guestCount : Nat;
+    id : BookingId;
+    roomId : RoomId;
+    status : BookingStatus;
+    totalPrice : Nat
+  };
+type BookingId = Nat;
+type BookingStatus = {#cancelled; #completed; #confirmed};
+type Branch<K, V> = {left : Trie<K, V>; right : Trie<K, V>; size : Nat};
+type CustomerId = Principal;
+type Hash = Nat32;
+type Key<K> = {hash : Hash; key : K};
+type Leaf<K, V> = {keyvals : AssocList__1<Key<K>, V>; size : Nat};
+type List<T> = ?(T, List<T>);
+type Room =
+  {
+    capacity : Nat;
+    id : RoomId;
+    pricePerNight : Nat;
+    roomNumber : Text;
+    roomType : RoomType;
+    status : RoomStatus
+  };
+type RoomId = Nat;
+type RoomStatus = {#available; #maintenance; #occupied};
+type RoomType = {#deluxe; #presidential; #standard; #suite};
+type Time = Int;
+type Trie<K, V> = {#branch : Branch<K, V>; #empty; #leaf : Leaf<K, V>};
+actor {
+  stable var availableRooms :
+    {#branch : Branch<RoomId, ()>; #empty; #leaf : Leaf<RoomId, ()>};
+  stable var bookings :
+    {
+      #branch : Branch<BookingId, Booking>;
+      #empty;
+      #leaf : Leaf<BookingId, Booking>
+    };
+  stable var customerBookings :
+    {
+      #branch : Branch<CustomerId, List<BookingId>>;
+      #empty;
+      #leaf : Leaf<CustomerId, List<BookingId>>
+    };
+  stable var nextBookingId : Nat;
+  stable var nextRoomId : Nat;
+  stable var rooms :
+    {#branch : Branch<RoomId, Room>; #empty; #leaf : Leaf<RoomId, Room>}
+};

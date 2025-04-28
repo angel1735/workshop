@@ -1,0 +1,72 @@
+type Time = int;
+type RoomType = 
+ variant {
+   deluxe;
+   presidential;
+   standard;
+   suite;
+ };
+type RoomStatus = 
+ variant {
+   available;
+   maintenance;
+   occupied;
+ };
+type RoomId = nat;
+type Room = 
+ record {
+   capacity: nat;
+   id: RoomId;
+   pricePerNight: nat;
+   roomNumber: text;
+   roomType: RoomType;
+   status: RoomStatus;
+ };
+type Result_3 = 
+ variant {
+   err: text;
+   ok;
+ };
+type Result_2 = 
+ variant {
+   err: text;
+   ok: Booking;
+ };
+type Result_1 = 
+ variant {
+   err: text;
+   ok: Room;
+ };
+type Result = 
+ variant {
+   err: text;
+   ok: BookingId;
+ };
+type CustomerId = principal;
+type BookingStatus = 
+ variant {
+   cancelled;
+   completed;
+   confirmed;
+ };
+type BookingId = nat;
+type Booking = 
+ record {
+   checkInDate: Time;
+   checkOutDate: Time;
+   customerId: CustomerId;
+   guestCount: nat;
+   id: BookingId;
+   roomId: RoomId;
+   status: BookingStatus;
+   totalPrice: nat;
+ };
+service : {
+  addRoom: (text, RoomType, nat, nat) -> (RoomId);
+  cancelBooking: (BookingId) -> (Result_3);
+  getAvailableRooms: () -> (vec Room) query;
+  getBookingDetails: (BookingId) -> (Result_2) query;
+  getMyBookings: () -> (vec Booking) query;
+  getRoomDetails: (RoomId) -> (Result_1) query;
+  makeBooking: (RoomId, Time, Time, nat) -> (Result);
+}
